@@ -1,0 +1,552 @@
+<html>
+
+<head>
+<meta charset=utf-8 />
+<title>Loop Ditty Geometric Music Visualizer</title>
+<!--External Libraries!-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--<script src="http://connect.soundcloud.com/sdk.js"></script>-->
+<script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+<script type="text/javascript" src="libs/gl-matrix-min.js"></script>
+<script type="text/javascript" src="libs/webgl-utils.js"></script>
+<script type="text/javascript" src="libs/numeric-1.2.6.min.js"></script>
+<script type="text/javascript" src="libs/interact.min.js"></script>
+<!--Libraries for capturing GIFs!-->
+<script type="text/javascript" src="libs/gif.js"></script>
+<script type="text/javascript" src="libs/gif.worker.js"></script>
+
+<!--My Scripts!-->
+<script src="Cameras3D.js"></script>
+<script src="DefaultCurves.js"></script>
+<script src="Colormaps.js"></script>
+<script src="PrecomputedSongs.js"></script>
+<script src="LoopDittyGL.js"></script>
+<script src="MusicFeatures.js"></script>
+<script src="MatrixUtilities.js"></script>
+
+<link rel="stylesheet" href="../assets/css/menu.css" />
+<link rel="stylesheet" href="../ditty.css" />
+
+<style>
+
+
+
+
+</style>
+</head>
+
+<body onload="webGLStart();">
+
+<div id = "title">Loop Ditty Geometric Music Visualizer</div>
+<div id = "subtitle"> by <a href = "http://www.ctralie.com">Chris Tralie</a></div>
+
+
+<!-- Header -->
+<header id="header">
+    <div class="inner">
+
+        <!-- Nav -->
+            <nav>
+                <ul>
+                    <li><a href="#menu">Menu</a></li>
+                </ul>
+            </nav>
+
+    </div>
+</header>
+
+<!-- Menu -->
+<nav id="menu">
+    <h2>Menu</h2>
+    <ul>
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../papers.html">Papers</a></li>
+        <li><a href="../dataset.html">Dataset</a></li>
+        <li><a href="../demo.html">Demo</a></li>
+        <li><a href="../analogies.html">Analogies</a></li>
+        <li><a href="../LoopDitty/index.html">LoopDitty</a></li>
+        <li><a href="../GraphDitty/index.html">GraphDitty</a></li>
+    </ul>
+</nav>
+
+<table>
+<tr><td colspan = "2"><div id = "acknowledgements">Supported by an <a href = "https://www.nsfgrfp.org/">NSF Graduate Fellowship</a> NSF DGF 1106401 and an NSF Research Training Grant NSF-DMS 1045133.
+<BR>Special thanks to <a href = "http://geomdata.com/">Geometric Data Analytics, Inc.</a> for inspiration
+    and the <a href = "http://bigdata.duke.edu/data-expeditions">Duke Data Expeditions Program</a> for motivation.
+</div>
+</td></tr>
+<tr><td colspan = "2"><div id = "directionbig">Paste SoundCloud URL Below To Begin</div></td></tr>
+<tr>
+<td><input id = "scurl" type = "text" size = "50"></td>
+<td><button type = "button" onclick = "querySoundCloudURL()">Submit</button></td>
+</tr>
+
+
+<tr><td colspan = "2">
+    <BR>
+    <h2><b>OR...</b></h2>
+    <BR>
+</td></tr>
+
+<tr><td><div id = "directionbig">Load Your Own Audio File</div></td><td><input type = "file" id = "audioInput"></td></tr>
+
+
+<tr><td colspan = "2">
+    <BR>
+    <h2>OR...</h2>
+    <BR>
+</td></tr>
+
+<tr><td><div id = "directionbig">Try A Precomputed Example</div></td>
+
+    <td>
+        <div class="dropdown">
+        <button onclick="dropdownHandler()" class="dropbtn">Example Songs by Artist</button>
+          <div id="precomputedExamples" class="dropdown-content">
+            <button type = "button" onclick = "loadAerosmith()">Aerosmith</button>
+            <button type = "button" onclick = "loadAlienAntFarm()">Alien Ant Farm</button>
+            <button type = "button" onclick = "loadBeeGees()">Bee Gees</button>
+            <button type = "button" onclick = "loadBigMoe()">Big Moe</button>
+            <button type = "button" onclick = "loadBodyLanguage()">Body Language</button>
+            <button type = "button" onclick = "loadChakaKhan()">Chaka Khan</button>
+            <button type = "button" onclick = "loadChiddyBang()">Chiddy Bang</button>
+            <button type = "button" onclick = "loadColdplay()">Coldplay</button>
+            <button type = "button" onclick = "loadDejLoaf()">Dej Loaf</button>
+            <button type = "button" onclick = "loadDiannaRoss()">Dianna Ross</button>
+            <button type = "button" onclick = "loadDrake()">Drake</button>
+            <button type = "button" onclick = "loadDuranDuran()">Duran Duran</button>
+            <button type = "button" onclick = "loadEarthWindAndFire()">Earth Wind And Fire</button>
+            <button type = "button" onclick = "loadFuture()">Future</button>
+            <button type = "button" onclick = "loadHeems()">Heems</button>
+            <button type = "button" onclick = "loadHudsonMohawke()">Hudson Mohawke</button>
+            <button type = "button" onclick = "loadJanetJackson()">Janet Jackson</button>
+            <button type = "button" onclick = "loadJenniferLopez()">Jennifer Lopez</button>
+            <button type = "button" onclick = "loadKC()">KC And The Sunshine Band</button>
+            <button type = "button" onclick = "loadKevinLyttle()">Kevin Lyttle</button>
+            <button type = "button" onclick = "loadLilB()">Lil B</button>
+            <button type = "button" onclick = "loadMase()">Ma$e</button>
+            <button type = "button" onclick = "loadMichaelJackson()">Michael Jackson</button>
+            <button type = "button" onclick = "loadMikeJones()">Mike Jones</button>
+            <button type = "button" onclick = "loadMissyElliot()">Missy Elliot</button>
+            <button type = "button" onclick = "loadMotorhead()">Motorhead</button>
+            <button type = "button" onclick = "loadMussorgsky()">Mussorgsky</button>
+            <button type = "button" onclick = "loadPeterGabriel()">Peter Gabriel</button>
+            <button type = "button" onclick = "loadRickJames()">Rick James</button>
+            <button type = "button" onclick = "loadRollingStones()">Rolling Stones</button>
+            <button type = "button" onclick = "loadStevieWonder()">Stevie Wonder</button>
+            <button type = "button" onclick = "loadSugarhillGang()">Sugarhill Gang</button>
+            <button type = "button" onclick = "loadTchaikovsky()">Tchaikovsky</button>
+            <button type = "button" onclick = "loadTeenaMarie()">Teena Marie</button>
+            <button type = "button" onclick = "loadTheBeatles()">The Beatles</button>
+            <button type = "button" onclick = "loadThePixies()">The Pixies</button>
+            <button type = "button" onclick = "loadTI()">T.I.</button>
+            <button type = "button" onclick = "loadUffie()">Uffie</button>
+            <button type = "button" onclick = "loadVanHalen()">Van Halen</button>
+            <button type = "button" onclick = "loadVanillaIce()">Vanilla Ice</button>
+            <button type = "button" onclick = "loadWillSmith()">Will Smith</button>
+            <button type = "button" onclick = "loadWizKhalifa()">Wiz Khalifa</button>
+            <button type = "button" onclick = "loadZombieNation()">Zombie Nation</button>
+          </div>
+        </div>
+
+       </td></tr>
+
+</table>
+
+<BR><BR>
+
+<table width = 1200>
+<tr><td><HR></td><td></td></tr>
+<tr>
+<td width = 800>
+<a name = "loading"></a>
+<div id = "pagestatus"><h3><font color = "red">Waiting for Input...</font></h3></div>
+</td>
+</tr>
+
+<tr><td>
+<table><tr><td>
+<canvas id="LoopDittyGLCanvas" style="border: none;" width="800" height="600"></canvas>
+</td></tr>
+<tr><td width = 800>
+
+
+<div id = "manualwidget">
+<input type="range" id="timeSlider" min = "0" max = "1000" value = "0" step = "1" style="width:760px"><br>
+<table>
+<tr>
+<td><button type = "button" onclick = "playAudioButton()">&#9654;</button></td>
+<td><button type = "button" onclick = "pauseAudio()">&#10073;&#10073;</button></td>
+<td><button type = "button" onclick = "startAnimation()">Make GIF</button></td>
+<td><a id="twitterButton" href = ""><img src = "Twitter.png" id = "twitterImage"></a>
+</tr>
+</table>
+</div>
+
+
+</td></tr>
+</table>
+
+
+</td>
+<td>
+
+<!--Parameter Choices!-->
+<table>
+<tr>
+<td colspan = "2">
+    <div class="tooltip"><div id = "paramtitle">Display Parameters</div>
+        <span class="tooltiptext">These are aesthetic animation parameters which can be updated quickly without any long re-computation</span>
+    </div>
+
+</td>
+</tr>
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Display Time Edges
+        <span class="tooltiptext">Choose whether or not line segments should be drawn between points which are adjacent in time in the song.</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="timeEdgesCheckbox" /></td>
+</tr>
+<tr><td colspan = "2">
+        <div class="tooltip"><div id = "paramtitle">Feature Choices</div>
+            <span class="tooltiptext">Each point in this animation is a 3 dimensional projection of a bunch of numbers which describe perceptual aspects of a chunk of music.  As the sound changes, these numbers also change, and so the points move through space.  You can choose to include or exclude certain numbers from contributing to the position of the points by checking and unchecking the boxes below</span>
+        </div>
+    </div></td></tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">MFCC
+        <span class="tooltiptext">MFCC stands for "<a href = "https://en.wikipedia.org/wiki/Mel-frequency_cepstrum">Mel-Frequency Cepstral Coefficient</a>." These 12 numbers model a highly smoothed version of the frequency spectrum of a chunk of audio.  They have been shown to work well for voice, musical artist, and musical instrument modeling.  They can be thought of as picking up on the "timbre" of the sound; or the stuff that isn't the notes.  By themselves, they should be able to separate many songs into distinct regions.</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="MFCCCheckbox" /></td>
+</tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Chroma
+        <span class="tooltiptext">Chroma is a 12-dimension feature set used to model the strength of the 12 notes in the <a href = "https://en.wikipedia.org/wiki/Chromatic_scale">Western chromatic scale</a>, factoring out the octave that they're in (so a 440hz and an 880hz A are equivalient, for example).  This is complementary to MFCC, since it models note pitches only, attempting to factor out information about timbre.</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="ChromaCheckbox" /></td>
+</tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Spectral Centroid
+        <span class="tooltiptext">The spectral centroid is a single number which is the average frequency in a chunk of audio.  This number is higher with higher musical notes, high frequency vibrations from percussive instruments, and consonant vocal sounds.  Conversely, it is lower for bass instruments, lower notes, and vowel sounds.</span>
+    </div>
+
+</div></td><td>
+<input type="checkbox" id="CentroidCheckbox" /></td>
+</tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Spectral Roloff
+        <span class="tooltiptext">The spectral roloff is the frequency below which 85% of the spectral power is contained.  Songs with more bass will have a lower spectral roloff, while electronic music with lots of high frequency energy will have a higher spectral roloff.</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="RoloffCheckbox" /></td>
+</tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Spectral Flux
+        <span class="tooltiptext">The spectral flux is the average difference in power between each frequency index between two adjacent chunks of audio.  It is like a "frequency derivative."  In highly percussive music, high values of this feature correlate strongly with drum hits, so if you use this feature by itself, you're likely to see a curve that "waves with the beat."</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="FluxCheckbox" /></td>
+</tr>
+
+<tr>
+<td><div id = "paramchoice">
+    <div class="tooltip">Zero Crossings
+        <span class="tooltiptext">This is a simple but surprisingly descriptive feature that counts the number of times the audio waveform goes up and down through the zero line.  It will be higher for higher frequencies</span>
+    </div>
+</div></td><td>
+<input type="checkbox" id="ZeroCrossingsCheckbox" /></td>
+</tr>
+
+<tr><td colspan = "2">
+    <div class="tooltip"><div id = "paramtitle">Window Options</div>
+        <span class="tooltiptext">Features from chunks of the audio are summarized within a "sliding window" of audio.  By default, the program takes the average value of features within each window, but it is also possible to report the variation of the features within the window. </span>
+    </div>
+</div></td></tr>
+
+<tr>
+    <td><div id = "paramchoice">
+        <div class="tooltip">Window Length
+            <span class="tooltiptext">This is the length in seconds of the window that is used to summarize the features taken in chunks of audio.  Features are computed in 23 millisecond chunks, so the default value of 3.5 seconds corresponds to averaging roughly 150 windows.  The longer the window is, the more sound is summarized by the window, which means the points in the animation are likely to be more distinct.  Longer windows also tend to produce smoother animations, while smaller windows pick up on faster variations</span>
+        </div>
+    </div></td>
+    <td><input id = "windowLength" type = "text" value = "3.5" size = "1"></td>
+</tr>
+
+<tr><td><div id = "paramchoice">
+    <div class="tooltip">Sphere Normalize
+        <span class="tooltiptext">For certain sections of audio that are quieter or very distinct from others, it may be the case that the animation spreads out with long tails.  Sphere normalization makes the magnitude of each feature point in the high dimensional space to be the same before the projection.  In plain English, it tries to distribute the points out more evenly.</span>
+    </div>
+</div></td>
+<td><input type="checkbox" id="SphereNormalizeCheckbox" /></td></td></tr>
+<tr><td><div id = "paramchoice">
+    <div class="tooltip">Use Variation
+        <span class="tooltiptext">In addition to reporting the mean of all of the features in a window, it is also possible to tack on more numbers that report how volatile each feature is in the window.  This is similar to the variance or standard deviation of features.  Computation will take slightly longer, but you may get more distinct points in your animation.</span>
+    </div>
+</div></td>
+<td><input type="checkbox" id="UseVariationCheckbox" /></td></td></tr>
+<tr><td colspan = "2"><BR><BR><button type = "button" id = "recompute" onclick = "updateParams()">Recompute Embedding</button></td></tr>
+
+</table>
+
+
+
+</td>
+</tr>
+
+<tr><td>
+<BR><BR>
+    <h1>Controls / Interaction</h1>
+    <ul>
+    <li><p>Hit the <font color = "#8dae4e;">play/pause buttons</font> to play and pause the audio once a song is loaded in, and click on the <font color = "#8dae4e;">slider below the animation</font> to jump through the song as it's playing</p></li>
+    <li><p>With a mouse, <font color = "#8dae4e;">left click + drag</font> to rotate the curve, <font color = "#8dae4e;">center click + drag</font> to translate the curve, and <font color = "#8dae4e;">right click + drag</font> to zoom in and out.  If your mouse doesn't have center or right click, then <font color = "#8dae4e;">hold CTRL + drag left mouse</font> to translate and <font color = "#8dae4e;">hold SHIFT + drag left mouse</font> to zoom. </p></li>
+    <li><p>
+    With a mobile device or a touch screen, <font color = "#8dae4e;">drag</font> to translate/rotate the curve and <font color = "#8dae4e;">pinch</font> to zoom.  <font color = "#8dae4e;">Double tap</font> to toggle between translating and rotating.
+    </p>
+    </li>
+    <li>
+        <p>
+            If you click the <font color = "#8dae4e;">"Make GIF"</font> button, the program will automatically generate an animated GIF looping 360 degrees around the current song you've loaded (thanks to <a href = "https://github.com/jnordberg/gif.js">gif.js</a>).
+        </p>
+    </li>
+    <li>
+    <p>
+        If you load a sound from Soundcloud (including the precomputed sounds), a <font color = "#8dae4e;">twitter button</font> will pop up below the time slider.  This will allow you to share a link which stores the song link and parameter choices you found under the hashtag <font color = "#8dae4e;">#loopditty</font> with a clickable link that others can use to view what you found.  So if you find interesting songs and parameter combinations, please share them!
+    </p>
+    </li>
+    <li>
+        <p>
+            <b>Why the colors??</b>  Colors indicate time.  Cool colors correspond to chunks of audio towards the beginning of the song, while hot colors correspond to colors towards the end.  With this scheme, if you see lots of different colors mixing together in a cluster, then that indicates visually that a song has repetitive sections that occur at different times.
+        </p>
+    </li>
+    </ul>
+
+    <h1>About</h1>
+    <p>
+    This app is a combination of audio and 3D geometry that is used to visually inspect statistics of music synchronized with the music they represent.  In plain English, <i>it's a music visualizer with a curve waving to the music</i>.  Depending on the statistics you choose, the curve will respond to different aspects of the music (mouse over "Feature Choices" for more information).  For instance, if you use the default parameters, you should see a curve which moves to distinct parts of space for different musical sections, such as verse, chorus, and bridge.  If, on the other hand, you choose only spectral flux, with a window length of 0.2 seconds, using sphere normalization and variation, you will see a curve which moves around a circle to the beat.  Play around with different combinations of feature parameters and see what you get for different types of music!
+    </p>
+
+
+    <p>
+    This app started off as an <a href = "http://www.ctralie.com/Teaching/Math412_F2014_MusicAssignment/">assignment</a> that <a href = "http://www.ctralie.com">Chris Tralie</a> created for an undergraduate class in <a href = "http://paulbendich.com/Spring2016TDA.pdf">applied topology</a> as part of <a href = "http://bigdata.duke.edu/data-expeditions">Duke Data Expeditions</a> during the fall of 2014.  It served as the motivation for research on <a href = "http://www.ctralie.com/Research/index.html#CoverSongsShape">cover song identification with timbral shape features</a> and <a href = "http://www.ctralie.com/Research/index.html#GeomModelsAudio">geometric models for musical audio</a>, which represent a portion of the applications in Chris's Ph.D. research.  This work was also highlighted in a <a href = "http://www.forbes.com/sites/kevinknudson/2016/07/29/visualizing-music-mathematically">Forbes blog article</a>.
+    </p>
+
+</td>
+
+<td>
+    <a class="twitter-timeline"  href="https://twitter.com/hashtag/loopditty" data-widget-id="791408444725157896">#loopditty Tweets</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</td></tr>
+
+</table>
+
+
+
+<script>
+    var source = null;
+    var analyser = null;
+    var context = new (window.AudioContext || window.webkitAudioContext)();
+    var buffer = null;
+    var waitingDisp = document.getElementById("pagestatus");
+
+
+    function disconnect() {
+        source.stop();
+        source.disconnect(0);
+        analyser.disconnect(0);
+    }
+
+    function playAudioButton() {
+        if (!playing) {
+            //Prevent the user from accidentally playing multiple audio streams
+            playAudio();
+        }
+    }
+
+    function playAudio() {
+        if (context === null) {
+            return;
+        }
+        playing = true;
+        source = context.createBufferSource();
+        source.buffer = buffer;
+        analyser = context.createAnalyser();
+        source.connect(analyser);
+        analyser.connect(context.destination);
+
+        startTime = context.currentTime;
+
+        //setTimeout(disconnect, source.buffer.duration * 1000 +1000);
+
+        source.start(context.currentTime, offsetTime, buffer.duration - offsetTime);
+
+        playIdx = 0;
+        requestAnimFrame(function(){repaintWithContext(context)});
+    }
+
+    function pauseAudio() {
+        if (source === null) {
+            return;
+        }
+        playing = false;
+        source.stop();
+        offsetTime = context.currentTime - startTime + offsetTime;
+    }
+
+    function decodeAudio(arrayBuff) {
+        if(context.decodeAudioData) {
+            context.decodeAudioData(arrayBuff, function(buff) {
+            buffer = buff;
+            }, function(e) {
+                console.log(e);
+                alert("Error Decoding Audio");
+            });
+        } else {
+            buffer = context.createBuffer(data, false /*mixToMono*/);
+            alert("Error Decoding Audio");
+            playAudio();
+        }
+    }
+
+    //Loading in a custom song
+    var audioInput = document.getElementById('audioInput');
+    audioInput.addEventListener('change', function(e) {
+        pauseAudio();
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            decodeAudio(event.target.result);
+        }
+        reader.readAsArrayBuffer(audioInput.files[0]);
+        queryCustomFeatures(audioInput.files[0]);
+    });
+
+
+    var timeSlider = document.getElementById('timeSlider');
+    timeSlider.addEventListener('change', function(e) {
+        if (buffer === null) {
+            return;
+        }
+        offsetTime = buffer.duration*parseFloat(timeSlider.value)/1000.0;
+        playIdx = 0;
+        requestAnimFrame(function(){repaintWithContext(context)});
+        if (playing) {
+            source.stop();
+            playAudio();
+        }
+    });
+
+    var timeEdgesCheckbox = document.getElementById('timeEdgesCheckbox');
+    timeEdgesCheckbox.addEventListener('change', function(e) {
+        MusicParams.displayTimeEdges = timeEdgesCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    timeEdgesCheckbox.checked = true;
+
+    var recomputeButton = document.getElementById("recompute");
+    var MFCCCheckbox = document.getElementById('MFCCCheckbox');
+    MFCCCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingMFCC = MFCCCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    MFCCCheckbox.checked = true;
+
+    var ChromaCheckbox = document.getElementById('ChromaCheckbox');
+    ChromaCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingChroma = ChromaCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    ChromaCheckbox.checked = true;
+
+    var CentroidCheckbox = document.getElementById('CentroidCheckbox');
+    CentroidCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingCentroid = CentroidCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    CentroidCheckbox.checked = true;
+
+    var RoloffCheckbox = document.getElementById('RoloffCheckbox');
+    RoloffCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingRoloff = RoloffCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    RoloffCheckbox.checked = true;
+
+    var FluxCheckbox = document.getElementById('FluxCheckbox');
+    FluxCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingFlux = FluxCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    FluxCheckbox.checked = true;
+
+    var ZeroCrossingsCheckbox = document.getElementById('ZeroCrossingsCheckbox');
+    ZeroCrossingsCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingZeroCrossings = ZeroCrossingsCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    ZeroCrossingsCheckbox.checked = true;
+
+    var SphereNormalizeCheckbox = document.getElementById('SphereNormalizeCheckbox');
+    SphereNormalizeCheckbox.addEventListener('change', function(e) {
+        MusicParams.sphereNormalize = SphereNormalizeCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    SphereNormalizeCheckbox.checked = false;
+
+    var UseVariationCheckbox = document.getElementById('UseVariationCheckbox');
+    UseVariationCheckbox.addEventListener('change', function(e) {
+        MusicParams.usingDerivatives = UseVariationCheckbox.checked;
+        makeMusicParamsDirty();
+    });
+    UseVariationCheckbox.checked = false;
+
+    var windowLengthText = document.getElementById('windowLength');
+    windowLengthText.value = "" + MusicParams.TimeWin;
+    windowLengthText.addEventListener('input', function() {
+        makeMusicParamsDirty();
+    })
+
+    function dropdownHandler() {
+        document.getElementById("precomputedExamples").classList.toggle("show");
+    }
+
+    checkURLParameters();
+    updateTwitterLink();
+</script>
+
+
+<script src="../assets/js/skel.min.js"></script>
+<script src="../assets/js/util.js"></script>
+<script src="../assets/js/main.js"></script>
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+    var sc_project=11397511; 
+    var sc_invisible=1; 
+    var sc_security="b7c2caad"; 
+    var scJsHost = (("https:" == document.location.protocol) ?
+    "https://secure." : "http://www.");
+    document.write("<sc"+"ript type='text/javascript' src='" +
+    scJsHost+
+    "statcounter.com/counter/counter.js'></"+"script>");
+    </script>
+    <noscript><div class="statcounter"><a title="web analytics"
+    href="http://statcounter.com/" target="_blank"><img
+    class="statcounter"
+    src="//c.statcounter.com/11397511/0/b7c2caad/1/" alt="web
+    analytics"></a></div></noscript>
+    <!-- End of StatCounter Code for Default Guide -->
+
+</body>
+</html>

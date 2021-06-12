@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Covers 1000</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <!--External Libraries!-->
+        <script src="libs/interact.min.js"></script>
+        <!--My Scripts!-->
+        <script src="ProgressBar.js"></script>
+        <script src="AudioObject.js"></script>
+        <script src="CrossSimilarityCanvas.js"></script>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="papers.html">Papers</a></li>
+							<li><a href="dataset.html">Dataset</a></li>
+							<li><a href="demo.html">Demo</a></li>
+                            <li><a href="analogies.html">Analogies</a></li>
+                            <li><a href="LoopDitty/index.html">LoopDitty</a></li>
+                            <li><a href="GraphDitty/index.html">GraphDitty</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Covers 1000: The Demo</h1>
+							
+							
+<p>
+Below is an interactive demo that allows users to play two cover songs synchronized with a cross-similarity matrix, which is a matrix describing how similar every beat from one song is with every beat from another song.  Long diagonals in these images indicate that many beats match in sequence, which is a good indication that the songs are indeed covers of each other (see <a href = "ctralie2017_EarlyMFCC_HPCPFusion.pdf">the paper</a> for more details).
+</p>						
+
+<p>
+In the demo below, choose a song example from the precomputed songs list.  Then press play/pause to play/pause the audio, left click on the image to jump to a beat from the first song, and right click (or CTRL + Click) to jump to a beat from the second song.  If you switch between the two songs along a bright diagonal, you should switch between two matched regions.  This will allow you to hear how two different artists express the same musical idea.
+</p>
+
+<p>
+You can look at the results with different feature types by selecting an option from the "Feature Type" menu (note that "SNF" is the fusion of all features, as described in <a href = "ctralie2017_EarlyMFCC_HPCPFusion.pdf">the paper</a>).  You will notice that certain features are better than others at picking up on similarity in different contexts.  For instance, in the "Tricky" example, traditional pitch-based <a href = "https://en.wikipedia.org/wiki/Harmonic_pitch_class_profiles">HPCP features</a> do extremely poorly because it's a hip hop song with one repeated note in the background, so notes give very little information.  The drum solo "Zappa" is similar in this regard.  By contrast, the notes are carried quite well in the "Smooth Criminal" example.
+</p>
+
+<p>
+If you would like to try your own examples, please visit <a href = "https://github.com/ctralie/GeometricCoverSongs#quick-comparison-of-two-songs-with-gui">this link</a> for instructions on how to do so.
+</p>
+
+<table>
+<tr>
+<td colspan = "2"><b>Precomputed Examples</b>
+    <div class = "select-wrapper">
+    <select id="Precomputed" name = "Precomputed">
+        <option value = "Examples/BadCompany.json">Bad Company</option>
+        <option value = "Examples/MyGeneration.json">My Generation</option>
+        <option value = "Examples/PartyRock.json">Party Rock</option>
+        <option value = "Examples/Despacito.json">Despacito</option>
+        <option value = "Examples/Toto.json">Toto-Africa</option>
+        <option value = "Examples/SmoothCriminal.json">Smooth Criminal</option>
+        <option value = "Examples/sweetdreams.json">Sweet Dreams</option>
+        <option value = "Examples/TakeOnMe.json">Take On Me</option>
+        <option value = "Examples/Time.json">Time</option>
+        <option value = "Examples/Tricky.json">Tricky</option>
+        <option value = "Examples/Zappa.json">Zappa</option>
+        <option value = "Examples/TryMe.json">Try Me</option>
+        <option value = "Examples/NoHands.json">No Hands</option>
+        <option value = "Examples/VocalToJazz.json">VocalToJazz</option>
+        <option value = "Examples/LaFolia.json">La Folia</option>
+    </select>
+    </div>
+
+</td>
+<td><b>File Input:</b> <input type = "file" id = "fileInput"></td>
+</tr>
+<tr>
+    <td><b>Feature Type</b>
+        <div class = "select-wrapper">
+        <select id="FeatureType" name = "FeatureType"></select>
+        </div>
+        </td>
+    <td><b>Image Type</b>
+        <div class="select-wrapper">
+        <select id="ImageType" name = "ImageType">
+            <option value = "CSM">CSM</option>
+            <option value = "DBinary">Binary CSM</option>
+            <option value = "D">Smith-Waterman Matrix</option>
+        </select>
+        </div>
+    </td>
+</tr>
+
+<tr><td>
+<button type = "button" onclick = "playAudioButton()">Play</button>
+<button type = "button" onclick = "pauseAudioButton()">Pause</button>
+<td>
+<b><p id = "songname"></p></b>
+</td>
+<td><b>Score:<p id = "score"></p></b></td>
+
+
+</tr>
+<tr><td colspan = "4">
+    <h3><p id = "pagestatus">Waiting for user input...</p></h3>
+</td></tr>
+<tr>
+<td colspan = "2">
+<canvas id="CrossSimilarityCanvas" width="800" height="700">
+</td>
+</tr>
+</table>
+
+<audio id="audio_widget1"></audio>
+<audio id="audio_widget2"></audio>
+
+<script>
+    var csmcanvas = new CSMCanvas();
+
+    function playAudioButton() {
+        csmcanvas.playAudio();
+    }
+
+    function pauseAudioButton() {
+        csmcanvas.pauseAudio();
+    }
+
+    var precomputedMenu = document.getElementById("Precomputed");
+    precomputedMenu.addEventListener('change', function(e){
+        filename = e.target.value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', filename, true);
+        xhr.responseType = 'json';
+        xhr.onload = function(err) {
+            csmcanvas.updateData(this.response);
+        };
+        csmcanvas.progressBar.loading = true;
+        csmcanvas.progressBar.changeLoad();
+        xhr.send();
+    });
+</script>
+
+							
+							
+							
+							
+							
+						
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+                               
+							</section>
+							<ul class="copyright">
+								<li>&copy; <a href = "http://www.ctralie.com">Christopher J. Tralie</a>. All rights reserved</li>
+								<li>Design: <a href="http://html5up.net">HTML5 UP</a>.</li> 
+								<li>This work was partially supported by an NSF Graduate Fellowship NSF under grant DGF-1106401 and an NSF big data grant DKA-1447491</li>
+							</ul>
+						</div>
+					</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			
+            <!-- Start of StatCounter Code for Default Guide -->
+            <script type="text/javascript">
+            var sc_project=11397511; 
+            var sc_invisible=1; 
+            var sc_security="b7c2caad"; 
+            var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+            document.write("<sc"+"ript type='text/javascript' src='" +
+            scJsHost+
+            "statcounter.com/counter/counter.js'></"+"script>");
+            </script>
+            <noscript><div class="statcounter"><a title="web analytics"
+            href="http://statcounter.com/" target="_blank"><img
+            class="statcounter"
+            src="//c.statcounter.com/11397511/0/b7c2caad/1/" alt="web
+            analytics"></a></div></noscript>
+            <!-- End of StatCounter Code for Default Guide -->
+
+	</body>
+</html>

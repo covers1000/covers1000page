@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Covers 1000</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="papers.html">Papers</a></li>
+							<li><a href="dataset.html">Dataset</a></li>
+							<li><a href="demo.html">Demo</a></li>
+							<li><a href="analogies.html">Analogies</a></li>
+							<li><a href="LoopDitty/index.html">LoopDitty</a></li>
+							<li><a href="GraphDitty/index.html">GraphDitty</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>The Dataset</h1>
+							
+							<h2>Description</h2>
+							<p>This dataset was curated and checked by hand starting from 395 groups of songs randomly drawn from <a href = "https://secondhandsongs.com/">https://secondhandsongs.com</a>.  For each song, there is metadata (song name / artist name / release year), computed beat onset times, MFCCs, and HPCPs, which are all explained below in more detail.  Metadata is in text files and the beat onset times / MFCCs / HPCPs are individual .mat files for each song.  For each feature type, a set of songs which are all covers of each other are contained in the same folder, and their filename corresponds to their <a href = "https://secondhandsongs.com/">secondhandsongs ID</a>.  For instance, in the MFCC files, <code>384/263799_MFCC.mat</code> is the file containing MFCC features for the song at link <a href = "https://secondhandsongs.com/performance/263799">https://secondhandsongs.com/performance/<b>263799</b></a>, which happens to be the original version of LMFAO's "Party Rock Anthem."  </p>
+							
+							<p>
+							<b>NOTE: All audio was resampled to 22050hz mono before these features were computed</b>
+							
+							
+							<p>
+							If you use this dataset in your work, please cite the following paper:
+							<BR>
+							<b>
+							[1] Christopher J. Tralie.  ``Early MFCC And HPCP Fusion for Robust Cover Song Identification.''  In <i>18th International Society for Music Information Retrieval (ISMIR) 2017, Suzhou China.</i>
+							</b>
+							
+							</p>
+							
+							<p>
+							<i>These feature have been provided without audio with the hopes that they can be useful in research without compromising any copyright arrangements.  <i>Please contact <a href = "http://www.ctralie.com">Chris Tralie</a> if you would like to compute another set of features on the dataset, and if you have code for doing so.  Any such requested features will also be made available on the web site, with credits to the requester, assuming they also cannot be reverse-engineered by themselves or in conjunction with existing features to recover the original audio.</i>
+							</p>
+							
+							<div class="table-wrapper">
+								<table class="alt">
+								<thead>
+								<th>File</th> <th>Description</th>
+								</thead>
+								
+								<tbody>
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1jlR5V-vJ_TKbDY7x7Gh8GWqUvb5mhear/view?usp=sharing">Metadata.zip</a><BR>(202.8Kb)</b></td>
+								<td>
+								This contains a text file for each song in the dataset.  The first three lines are song name, artist, and date of recording release, respectively.  Sometimes there is a fourth optional line.  For instance, 368/<a href = "https://secondhandsongs.com/performance/265434">265434</a>.txt contains the following 4 lines<BR><BR>
+								    <table>
+								    <tr><td>Born to Be My Baby</td></tr>
+                                    <tr><td>Bon Jovi</td></tr>
+                                    <tr><td>1988</td></tr>
+                                    <tr><td>First release</td></tr>
+                                    </table>
+								</td>
+								</tr>
+								
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1qMpQzkSrjf0lHDyX9DvU4gBi3Jv2lARo/view?usp=sharing">HPCPs.zip</a><BR> (400.7Mb)</b></td>
+								<td>
+								All HPCP features <a href = "http://essentia.upf.edu/documentation/reference/streaming_HPCP.html">computed with Essentia</a>.  For each song, there is a .mat file with the following fields
+								<ul>
+								<li><b>Fs</b>: The sample rate in hz</li>
+								<li><b>hopSize</b>: The hop size between HPCP windows</li>
+								<li><b>XHPCP</b>: A <i>12xN</i> array of HPCP vectors ordered by time, where N is the number of HPCP windows in the song</li>
+								</ul>
+								</td>
+								</tr>
+
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1IOl3CtR3buHTaQwJ2xHB0KhaBAFUYq62/view?usp=sharing">CREMA.zip</a><BR> (1.9 GB)</b></td>
+								<td>
+								CREMA-PCP features computed with <a href = "https://github.com/bmcfee/crema/">this code</a>
+								</td>
+								</tr>
+
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1-2vqub5hYIMN_b4Q8tA-RoxdtXRsPP4G/view?usp=sharing">CENS.zip</a><BR> (398.1Mb)</b></td>
+								<td>
+								All CENS features <a href = "http://librosa.github.io/librosa/generated/librosa.feature.chroma_cens.html">computed with librosa</a>.  For each song, there is a .mat file with the following fields
+								<ul>
+								<li><b>Fs</b>: The sample rate in hz</li>
+								<li><b>hopSize</b>: The hop size between CENS windows</li>
+								<li><b>XCENS</b>: A <i>12xN</i> array of CENS vectors ordered by time, where N is the number of HPCP windows in the song</li>
+								</ul>
+								</td>
+								</tr>
+								
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/12-t_UwzCu06ZFS7BKc0GzQy_gXQGdZ5u/view?usp=sharing">MFCCs.zip</a><BR> (702.8Mb)</b></td>
+								<td>
+								All MFCC features, with window sizes equal to half of the sample rate. For each song, there is a .mat file with the following fields
+								<ul>
+								<li><b>Fs</b>: The sample rate in hz</li>
+								<li><b>hopSize</b>: The hop size between HPCP windows</li>
+								<li><b>winSize</b>: The window size of each MFCC window</li>
+								<li><b>XMFCC</b>: A <i>20xN</i> array of MFCC vectors ordered by time (20 MFCC coefficients are calculated for every song in the dataset), where N is the number of MFCC windows in the song</li>
+								</ul>
+								</td>
+								</tr>
+								
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1ZBhmsuvC-THh6nB5BLz5G4jRzgAG6CXI/view?usp=sharing">Beats.zip</a><BR> (3.0Mb)</b></td>
+								<td>
+								Different beat intervals from different beat trackers for all songs.  For 60, 120, and 180, the beats are computed with a <a href = "https://librosa.github.io/librosa/generated/librosa.beat.beat_track.html">dynamic programming beat tracker courtesy of librosa</a>.  For the tempo level 0, the beats are computed with <a href = "http://madmom.readthedocs.io/en/latest/modules/features/beats.html">the Madmom library</a>, which is the state of the art if only one beat level is used.  For each song, there is a .mat file with the following fields
+								<ul>
+								<li><b>Fs</b>: The sample rate in hz</li>
+								<li><b>hopSize</b>: The factor to convert from a beat onset integer to samples from the beginning of the song.  This aligns with both the MFCC and HPCP frames at 512 samples (included here for redundancy), so that the beat onset number can be treated as an MFCC or HPCP frame index.</li>
+							    <li><b>beats0</b>: Beats processed with the <a href = "https://github.com/CPJKU/madmom">Madmom library</a></li>
+							    <li><b>tempo0</b>: Associated tempo</li>
+								<li><b>beats60</b>: Dynamic programming beat onsets, biased at 60 beats per minute</li>
+								<li><b>tempo60</b>: Associated tempo</li>
+								<li><b>beats120</b>: Dynamic programming beat onsets, biased at 120 beats per minute</li>
+								<li><b>tempo120</b>: Associated tempo</li>
+								<li><b>beats180</b>: Dynamic programming beat onsets, biased at 180 beats per minute</li>
+								<li><b>tempo180</b>: Associated tempo</li>
+								</ul>
+								
+								</td>
+								</tr>
+								
+								<tr>
+								<td><b><a href = "https://drive.google.com/file/d/1AkHPNu970pRpWMFY13rsgqx6ASQRc3-G/view?usp=sharing">Zappa.zip</a><BR> (11.3Mb)</b></td>
+								<td>
+								Contains all of the above files for the 8 covers of Zappa's "The Black Page, " as described in <a href = "ctralie2017_EarlyMFCC_HPCPFusion.pdf">the paper</a>.
+								</td>
+								</tr>
+								
+								</tbody>
+								
+								</table>
+							</div>
+							
+							<h2>Years</h2>
+							Below is a histogram of years that songs in this dataset were recorded.  The earliest song is from <a href = "https://secondhandsongs.com/performance/231607">1905</a>, and the most recent songs are from 2016<BR><BR>
+							<img src = "Covers1000Years.svg"><BR><BR>
+							
+							<h2>Other Observations</h2>
+							I took a lot of notes as I was going through curating the dataset, and I commented in places how the algorithm described in <a href = "ctralie2017_EarlyMFCC_HPCPFusion.pdf">the paper</a> works on various examples.  Below are the notes:
+                            <ul>
+                            <li>8: A good example of where the notes are quite different</li>
+                            <li>12: Good example of screamo cross genre</li>
+                            <li>21: The songs really diverge after the beginning</li>
+                            <li>22: This is a language translation, so mfcc completely fails!</li>
+                            <li>28: Good example where SSMs work, chroma fails</li>
+                            <li>31: Another language translation</li>
+                            <li>32: Difficult; very different stylistically (only fusion works)</li>
+                            <li>34: Good example where one repeats a section that another doesn't</li>
+                            <li>37: One has an intro that's lacking in the other</li>
+                            <li>44: Good example of time warping</li>
+                            <li>46: Difficult Example</li>
+                            <li>52: Instrumental Only Cover</li>
+                            <li>60: Extremely difficult example</li>
+                            <li>65: Instrumental Only Cover</li>
+                            <li>67: Difficult Example</li>
+                            <li>70: Time Warping (so SSM does badly)</li>
+                            <li>72: Cross language translation (easy example)</li>
+                            <li>74: Extreme cross genre example</li>
+                            <li>75: Example where one has very non-distinct vocals and all modalities are needed to match</li>
+                            <li>76: Good Cross Genre</li>
+                            <li>81: An example where chroma does not do well due to the vast vocal embelishments</li>
+                            <li>93: Long Intro In Long Version</li>
+                            <li>95: Good Example of Complementary Features, very different tempos</li>
+                            <li>98: Notes don't work well at all on this one; SSMs work best</li>
+                            <li>103: SSMs work way better than chroma (reverb screws up the pitch)</li>
+                            <li>107: Raw MFCCs work better here (probably due to the similar drums in the background)</li>
+                            <li>112: Willie Nelson has a longer improv halfway through, Johnny Bush has a long improv at the end</li>
+                            <li>114: Difficult example with lots of embellishments</li>
+                            <li>115: Extremely difficult example</li>
+                            <li>116: Long talking intro in one of them</li>
+                            <li>119: Spanish example: vocals not very clear with Carlos Puebla compared to others</li>
+                            <li>123: The original version has a longer outro</li>
+                            <li>124: Very difficult jazz example</li>
+                            <li>127: Difficult example (old vocals not very distinct, needs to rely on pitch)</li>
+                            <li>133: Difficult examples (stylistically very different)</li>
+                            <li>134: Very different genres (Richard Cheese, 1000 Mona Lisas)</li>
+                            <li>147: The Babyface version repeats some sections</li>
+                            <li>148: HPCP / SSMs complement each other well (some sections towards the middle are spoken word)</li>
+                            <li>155: German male / female</li>
+                            <li>156: Jerry Garcia studio (Deal) versus Grateful Dead live</li>
+                            <li>172: HPCP / SSMs complement each other well</li>
+                            <li>180: An orchestral instrumental only cover, which relies entirely on pitch</li>
+                            <li>182: Cross genre (R&B to reggae)</li>
+                            <li>183: Notes are different, so relies heavily on MFCC SSMs</li>
+                            <li>184: Very different instruments</li>
+                            <li>186: Difficult example (many embellishments)</li>
+                            <li>192: Notes are different, so need to rely on MFCC SSMs</li>
+                            <li>195: Looks like OTI failed here, but SSMs worked well still</li>
+                            <li>198: Fusion makes a big improvement here for some reason</li>
+                            <li>199: UB40 has an extremely long outro</li>
+                            <li>207: Cross gender</li>
+                            <li>208: Difficult example, seems to only work with fusion</li>
+                            <li>219: Fusing makes a huge difference</li>
+                            <li>222: Fusion helps here</li>
+                            <li>231: OTI seems to have failed here, but SSMs still worked</li>
+                            <li>232: Very strange cover of Fleetwood Mac</li>
+                            <li>234: Long intro on one of them</li>
+                            <li>238: Very strange guttoral cover by "Debauchery"</li>
+                            <li>239: One of the songs has a different name but they're definitely all covers</li>
+                            <li>241: The Blasters have a long piano solo in the middle</li>
+                            <li>242: One of many cross gender examples</li>
+                            <li>245: Different titles but they are indeed covers</li>
+                            <li>251: Difficult jazz example</li>
+                            <li>259: Different song, difficult example with very stylistically different vocals</li>
+                            <li>261: Vocal to jazz example (neat!)</li>
+                            <li>268: Fusion has a significant impact here</li>
+                            <li>273: John Mayall to Santana works well with fusion</li>
+                            <li>256, 276: International songs</li>
+                            <li>284: SSMs work better than chroma, fusion has a significant improvement over both</li>
+                            <li>295: Difficult example</li>
+                            <li>301: Difficult jazz example (both beat tracking and major improv)</li>
+                            <li>304: Instrumental only cover by Lawrence Welk (chromas are important here)</li>
+                            <li>307: Interesting piano to brass jazz example</li>
+                            <li>313: Funny cover of Only Happy when It Rains by Richard Cheese</li>
+                            <li>317: OTI must have failed here</li>
+                            <li>318: Reggae example where raw MFCC works quite well (better than HPCP actually)</li>
+                            <li>320: Raw MFCCs work better here than anything else</li>
+                            <li>322: Old foreign example</li>
+                            <li>323: Raw MFCCs work well here</li>
+                            <li>326: First recording and first release by two different artists, but definitely covers (strange)</li>
+                            <li>327: Grateful Dead to Courtney Barnett raw MFCC works the best</li>
+                            <li>328: Raw MFCCs work well</li>
+                            <li>329: Raw MFCCs work well</li>
+                            <li>331: Raw MFCCs work well</li>
+                            <li>332: Fusion Helps</li>
+                            <li>335: Difficult example, lots of embellishments</li>
+                            <li>336: None of the individual features work well, but fusion does</li>
+                            <li>337: MFCC works surprisingly well for a jazz song</li>
+                            <li>342: Steve Perry, Randy Goodrum SSMs do much more than raw MFCCs</li>
+                            <li>343: Raw MFCCs work well here</li>
+                            <li>344: Fusion helps here</li>
+                            <li>352: SSMs by far the best here</li>
+                            <li>354: Highly distorted live version</li>
+                            <li>355: Fusion helps a lot here</li>
+                            <li>357: Cross Genre</li>
+                            <li>366: MFCC by itself does well</li>
+                            <li>368: Difficult cross genre (Bon Jovi to screamo Catamenia...words are hardly decipherable)</li>
+                            <li>367: SSMs do a lot better than MFCCs</li>
+                            <li>369: SSMs do a lot better than MFCCs</li>
+                            <li>371: SSMs do the best here</li>
+                            <li>374: Japanese song</li>
+                            <li>378: Cross genre other language</li>
+                            <li>381: MFCC/SSMs work better than chroma</li>
+                            <li>382: Great cross genre</li>
+                            <li>384: Party Rock covers, Ashley Scared The Sky is difficult cross-genre</li>
+                            <li>386: Tom Waits to Linda Thompson fusion really helps</li>
+                            <li>388: Good example of cello cover of a hard rock song</li>
+                            <li>391: Frank Zappa to others good cross instrument</li>
+                            <li>393: International Songs</li>
+                            </ul>
+
+						</div>
+						
+						
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+                               
+							</section>
+							<ul class="copyright">
+								<li>&copy; <a href = "http://www.ctralie.com">Christopher J. Tralie</a>. All rights reserved</li>
+								<li>Design: <a href="http://html5up.net">HTML5 UP</a>.</li> 
+								<li>This work was partially supported by an NSF Graduate Fellowship NSF under grant DGF-1106401 and an NSF big data grant DKA-1447491</li>
+							</ul>
+						</div>
+					</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			
+			
+            <!-- Start of StatCounter Code for Default Guide -->
+            <script type="text/javascript">
+            var sc_project=11397511; 
+            var sc_invisible=1; 
+            var sc_security="b7c2caad"; 
+            var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+            document.write("<sc"+"ript type='text/javascript' src='" +
+            scJsHost+
+            "statcounter.com/counter/counter.js'></"+"script>");
+            </script>
+            <noscript><div class="statcounter"><a title="web analytics"
+            href="http://statcounter.com/" target="_blank"><img
+            class="statcounter"
+            src="//c.statcounter.com/11397511/0/b7c2caad/1/" alt="web
+            analytics"></a></div></noscript>
+            <!-- End of StatCounter Code for Default Guide -->
+
+	</body>
+</html>

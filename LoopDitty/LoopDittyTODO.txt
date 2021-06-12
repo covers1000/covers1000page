@@ -1,0 +1,70 @@
+FINISHED:
+*Deploy a new heroku dyno which uses soundcloud audio and computes features with librosa
+[Used my own library instead from before when I made loop ditty in Python.  Modified it to be much more memory efficient]
+
+*Port over new camera with zooming/panning in addition to rotation
+[DONE]
+
+*Make sure correct PCA is being used
+[DONE]
+
+*Fix loopditty cursive
+[DONE: Changed to "welcome"]
+
+*Get touch interaction to work
+[Used the interactjs library]
+
+*Have the option to upload a user's own song
+This took a while.  Key code below:
+def index(request):
+    print "request = ", request
+    if request.method == 'GET':
+        #Step 1: Resolve sound cloud track URL
+        if 'url' in request.GET:
+            return processSoundcloudSong(request.GET['url'])
+        else:
+            return HttpResponse(json.dumps({"Error":"Need to input a soundcloud URL"}))
+    elif request.method == 'POST':
+        if 'file' in request.FILES:
+            f = request.FILES['file']
+            fs = FileSystemStorage()
+            filename = fs.save(f.name, f)
+            return processCustomAudio("media/" + filename)
+        else:
+            return HttpResponse(json.dumps({"Error":"Need to attach a music file"}))
+    return HttpResponse("Need to input a soundcloud URL or attach a music file")
+
+
+*Change Django settings.py for secure deployment
+[DONE]
+
+*Clear Disqus.  Put NSF RTG, NSF GRFP acknowledgements and link to IID and GeomData
+[DONE]
+
+*General work on aesthetics
+[Went with a dark gray background and an off-white foreground]
+
+*Have the option to check and uncheck different feature sets, and to change the length of the texture window (i.e. all delay window computation takes place client side)
+-Highlight recompute button when changes have been made
+[DONE]
+
+*Add precomputed examples
+[DONE]
+
+*Share parameters button (share on twitter with twitpic or twitter gif)
+-Anchor on viewer upon load
+[DONE]
+I have it so it can automatically make an animated GIF, and you can link to twitter.  I wasn't able to combine the two, and I couldn't get it to shorten the links that it puts on twitter, but it's enough that people can fill in the gaps themselves if they're so inclined.
+
+TODO:
+
+
+*Credit js libraries used
+*Show/hide about text
+
+
+Other:
+*Store requested songs in a database, and/or cache features
+*Make sure longer songs work (fix DelaySeries code)
+https://soundcloud.com/walter-morales-music/rachmaninoff-piano-concerto-no
+*Figure out why clicking on slider doesn't work in chrome

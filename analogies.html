@@ -1,0 +1,1015 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Covers 1000</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+        <!--External Libraries!-->
+        <script src="libs/interact.min.js"></script>
+        <!--My Scripts!-->
+        <script src="UtilityFunctions.js"></script>
+        <script src="CrossSimilarityCanvas.js"></script>
+        <script src="FeatureLoader.js"></script>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+        <nav id="menu">
+          <h2>Menu</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="papers.html">Papers</a></li>
+            <li><a href="dataset.html">Dataset</a></li>
+            <li><a href="demo.html">Demo</a></li>
+            <li><a href="analogies.html">Analogies</a></li>
+            <li><a href="LoopDitty/index.html">LoopDitty</a></li>
+            <li><a href="GraphDitty/index.html">GraphDitty</a></li>
+          </ul>
+        </nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1><a href = "ctralie2018_CoverSongAnalogies.pdf">Cover Song Synthesis by Analogy</a>: <BR>Supplementary Material</h1>
+                                <h2>By <a href = "http://www.ctralie.com">Chris Tralie</a></h2>
+                                <h2><a href = "ctralie2018_CoverSongAnalogies.pdf">Click here</a> to view the technical paper</h2>
+                                <h2>Abstract</h2>
+                                <p>
+                                ﻿In this work, we pose and address the following ``cover song analogies'' problem: given a song A by artist 1 and a cover song A' of this song by artist 2, and given a different song B by artist 1, synthesize a song B' which is a cover of B in the style of artist 2. Normally, such a polyphonic style transfer problem would be quite challenging, but we show how the cover songs example constrains the problem, making it easier to solve. First, we extract the longest common beat-synchronous subsequence between A and A', and we time stretch the corresponding beat intervals in A' so that they align with A. We then derive a version of joint 2D convolutional NMF, which we apply to the constant-Q spectrograms of the synchronized segments to learn a translation dictionary of sound templates from A to A'. Finally, we apply the learned templates as filters to the song B, and we mash up the translated filtered components into the synthesized song B' using audio mosaicing. We showcase our algorithm on several examples, including a synthesized cover version of Michael Jackson's ``Bad'' by Alien Ant Farm, learned from the latter's ``Smooth Criminal'' cover.
+                                </p>
+                                
+                                <h2>Examples</h2>
+                                <ul>
+                                <li><a href = "#mjaf1">Alien Ant Farm & Michael Jackson Example 1 ("Bad")</a></li>
+                                <li><a href = "#mjaf2">Alien Ant Farm & Michael Jackson Example 2 ("Wanna Be Startin Something")</a></li>
+                                <li><a href = "#eurythmics">Eurythmics & Marilyn Manson</a></li>
+                                </ul>
+
+                                <BR><BR><HR>
+                                <h1><a name = "mjaf1">Alien Ant Farm & Michael Jackson Example 1 ("Bad")</a></h1>
+                                Synthesizing Alien Ant Farm Cover of Michael Jackson's "Bad"<BR><BR>
+
+
+
+                                <h2>Analogies Results</h2>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/MJ_SmoothCriminal.mp3'>A</a> (Michael Jackson "Smooth Criminal")</b></td>
+                                <td><b><a href = 'MJAAFBad/AAF_SmoothCriminal.mp3'>A'</a> (Alien Ant Farm "Smooth Criminal")</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/MJ_SmoothCriminal.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/AAF_SmoothCriminal.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/MJ_Bad.mp3'>B</a> (Michael Jackson "Bad")</b></td>
+                                <td><b><a href = 'MJAAFBad/BpFinalSTFT_Translated.mp3'>B'</a> (Synthesized Alien Ant Farm "Bad")</b> This is our main result</td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/MJ_Bad.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/BpFinalSTFT_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                </table><BR><BR>
+
+
+                                <h2>1) Synchronization of A and A'</h2>
+
+                                <p>
+                                Changing the speed of A' locally so that it aligns with A
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/SmoothCriminalSynced.mp3'>Synced</a> (put on your headphones...A in left ear, A' in right ear) </b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/SmoothCriminalSynced.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table>
+                                <BR><BR>
+
+
+
+
+                                <h2>2) W1 and W2 Joint Factorization</h2>
+
+                                <b><a href = "MJAAFBad/NMF2DJoint.mat">Ws and Hs (matfile)</a></b>
+
+                                <img src = "MJAAFBad/MJJointK3.svg"><BR><BR>
+
+
+
+
+                                <h2>3) Phase Retrieval on W1 and W2 Components</h2>
+
+                                <p>
+                                We can listen to the components of W1 and W2 by applying the Griffin Lim algorithm in the CQT domain and inverting at the end.  This can help us gain insights into what the filters are actually picking up on.
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A_W0.mp3'>W11</a> (MJ Guitar)</b></td>
+                                <td><b><a href = 'MJAAFBad/Ap_W0.mp3'>W21</a> (AAF Guitar)</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A_W0.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap_W0.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A_W1.mp3'>W12</a> (MJ percussion + some guitar bleed)</b></td>
+                                <td><b><a href = 'MJAAFBad/Ap_W1.mp3'>W22</a> (AAF percussion)</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A_W1.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap_W1.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A_W2.mp3'>W13</a> (MJ Bass track)</b></td>
+                                <td><b><a href = 'MJAAFBad/Ap_W2.mp3'>W23</a> (AAF Bass track)</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A_W2.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap_W2.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+                                </table>
+
+
+
+
+
+
+
+
+
+                                <BR><BR>
+                                <h2>4) Filtering And Inverting CQTs</h2>
+
+                                <p>
+                                As described in the paper, we can use the learned decomposition to come up with masks on the original audio and separate it into corresponding components between A and A'.  This creates our "per-instrument translation dictionary," which we use to synthesize cover songs.
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A0_iCQT.mp3'>A1</a></b></td>
+                                <td><b><a href = 'MJAAFBad/Ap0_iCQT.mp3'>A'1</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A1_iCQT.mp3'>A2</a></b></td>
+                                <td><b><a href = 'MJAAFBad/Ap1_iCQT.mp3'>A'2</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/A2_iCQT.mp3'>A3</a></b></td>
+                                <td><b><a href = 'MJAAFBad/Ap2_iCQT.mp3'>A'3</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/A2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Ap2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table>
+
+
+
+
+                                <BR><BR>
+                                <h2>5) Musaicing</h2>
+
+                                <p>
+                                Now that we have the translation dictionaries, we can split B up into components B1, B2, and B3 using W1, and we can use templates from A1, A2, and A3, respectively, to form them (using Driedger's audio musaicing).  Based on the coefficients we use from A1, A2, and A3, we can then translate them into grains A'1, A'2, and A'3, which form the final translations B'1, B'2, and B'3
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/B0_iCQT.mp3'>B1</a></b></td>
+                                <td><b><a href = 'MJAAFBad/B1_iCQT.mp3'>B2</a></b></td>
+                                <td><b><a href = 'MJAAFBad/B2_iCQT.mp3'>B3</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/B0_DriedgerSTFT.mp3'>B1 Driedger</a></b></td>
+                                <td><b><a href = 'MJAAFBad/B1_DriedgerSTFT.mp3'>B2 Driedger</a></b></td>
+                                <td><b><a href = 'MJAAFBad/B2_DriedgerSTFT.mp3'>B3 Driedger</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B0_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B1_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/B2_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'MJAAFBad/Bp0_Translated.mp3'>B'1</a></b></td>
+                                <td><b><a href = 'MJAAFBad/Bp1_Translated.mp3'>B'2</a></b>
+                                This track picks up on a lot of nice scream embellishments from Alien Ant Farm
+                                </td>
+                                <td><b><a href = 'MJAAFBad/Bp2_Translated.mp3'>B'3</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Bp0_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Bp1_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFBad/Bp2_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table><BR><BR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <BR><BR><HR>
+                                <h1><a name = "mjaf2">Alien Ant Farm & Michael Jackson Example 2 <BR>("Wanna Be Startin Something")</a></h1>
+                                Synthesizing Alien Ant Farm Cover of Michael Jackson's "Wanna Be Startin Something"
+
+
+
+                                <h2>Analogies Results</h2>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFWanna/MJ_SmoothCriminal.mp3'>A</a> (Michael Jackson "Smooth Criminal")</b></td>
+                                <td><b><a href = 'MJAAFWanna/AAF_SmoothCriminal.mp3'>A'</a> (Alien Ant Farm "Smooth Criminal")</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/MJ_SmoothCriminal.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/AAF_SmoothCriminal.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'MJAAFWanna/MJWanna.mp3'>B</a> (Michael Jackson "Wanna Be Startin Something")</b></td>
+                                <td><b><a href = 'MJAAFWanna/BpFinalStretched.mp3'>B'</a> (Synthesized Alien Ant Farm "Bad")</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/MJWanna.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/BpFinalStretched.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                </table><BR><BR>
+
+
+
+                                <h2>1) Steps 1-4</h2>
+                                <p>
+                                We omit these steps since we use the same dictionary that we used in the <a href = "#mjaf1">MJ/AAF "Bad" Example</a>.
+                                </p>
+
+                                <h2>5) Musaicing</h2>
+
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'MJAAFWanna/B0_iCQT.mp3'>B1</a></b></td>
+                                <td><b><a href = 'MJAAFWanna/B1_iCQT.mp3'>B2</a></b></td>
+                                <td><b><a href = 'MJAAFWanna/B2_iCQT.mp3'>B3</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'MJAAFWanna/B0_DriedgerSTFT.mp3'>B1 Driedger</a></b></td>
+                                <td><b><a href = 'MJAAFWanna/B1_DriedgerSTFT.mp3'>B2 Driedger</a></b></td>
+                                <td><b><a href = 'MJAAFWanna/B2_DriedgerSTFT.mp3'>B3 Driedger</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B0_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B1_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/B2_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'MJAAFWanna/Bp0_Translated.mp3'>B'1</a></b></td>
+                                <td><b><a href = 'MJAAFWanna/Bp1_Translated.mp3'>B'2</a></b>
+                                </td>
+                                <td><b><a href = 'MJAAFWanna/Bp2_Translated.mp3'>B'3</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/Bp0_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/Bp1_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='MJAAFWanna/Bp2_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table><BR><BR>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <BR><BR><BR><HR>
+
+                                <h1><a name = "eurythmics">Eurythmics & Marilyn Manson</a></h1>
+
+                                <p>
+                                Synthesizing Marilyn Manson Cover of Eurythmics' "Who's That Girl."  There is a more extreme tempo change between cover versions in this example than in the others.
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'SweetDreams/SweetDreamsEurythmics.mp3'>A</a> (Eurythmics "Sweet Dreams")</b></td>
+                                <td><b><a href = 'SweetDreams/SweetDreamsMarilynManson.mp3'>A'</a> (Marilyn Manson "Sweet Dreams")</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/SweetDreamsEurythmics.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/SweetDreamsMarilynManson.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/WhosThatGirlClip.mp3'>B</a> (Eurythmics "Who's That Girl")</b></td>
+                                <td><b><a href = 'SweetDreams/BpFinalStretched.mp3'>B'</a> (Synthesized Marilyn Manson "Who's That Girl")</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/WhosThatGirlClip.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/BpFinalStretched.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                </table><BR><BR>
+
+
+                                <h2>1) Synchronization of A and A'</h2>
+
+                                <p>
+                                Changing the speed of A' locally so that it aligns with A
+                                </p>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'SweetDreams/SweetDreamsAlignedClip.mp3'>Synced</a> (put on your headphones...A in left ear, A' in right ear) </b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/SweetDreamsAlignedClip.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table>
+                                <BR><BR>
+
+
+
+
+                                <h2>2) W1 and W2 Joint Factorization</h2>
+
+                                <b><a href = "SweetDreams/NMF2DJoint.mat">Ws and Hs (matfile)</a></b>
+
+                                <img src = "SweetDreams/EurythmicsJoint.svg"><BR><BR>
+
+
+
+
+                                <h2>3) Phase Retrieval on W1 and W2 Components</h2>
+
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A_W0.mp3'>W11</a></b></td>
+                                <td><b><a href = 'SweetDreams/Ap_W0.mp3'>W21</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A_W0.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap_W0.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A_W1.mp3'>W12</a></b></td>
+                                <td><b><a href = 'SweetDreams/Ap_W1.mp3'>W22</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A_W1.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap_W1.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A_W2.mp3'>W13</a> (Main Eurythmics synth filter)</b></td>
+                                <td><b><a href = 'SweetDreams/Ap_W2.mp3'>W23</a> (Marilyn Manson guitar filter)</b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A_W2.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap_W2.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+                                </table>
+
+
+
+
+
+
+
+
+
+                                <BR><BR>
+                                <h2>4) Filtering And Inverting CQTs</h2>
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A0_iCQT.mp3'>A1</a></b></td>
+                                <td><b><a href = 'SweetDreams/Ap0_iCQT.mp3'>A'1</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A1_iCQT.mp3'>A2</a></b></td>
+                                <td><b><a href = 'SweetDreams/Ap1_iCQT.mp3'>A'2</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/A2_iCQT.mp3'>A3</a></b></td>
+                                <td><b><a href = 'SweetDreams/Ap2_iCQT.mp3'>A'3</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/A2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Ap2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table>
+
+
+
+
+                                <BR><BR>
+                                <h2>5) Musaicing</h2>
+
+
+                                <table border = "1">
+                                <tr>
+                                <td><b><a href = 'SweetDreams/B0_iCQT.mp3'>B1</a></b></td>
+                                <td><b><a href = 'SweetDreams/B1_iCQT.mp3'>B2</a></b></td>
+                                <td><b><a href = 'SweetDreams/B2_iCQT.mp3'>B3</a></b></td>
+                                </tr>
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B0_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B1_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B2_iCQT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/B0_DriedgerSTFT.mp3'>B1 Driedger</a></b></td>
+                                <td><b><a href = 'SweetDreams/B1_DriedgerSTFT.mp3'>B2 Driedger</a></b> (this was unable to represent the new triangle instrument, since this was never in the original song A)</td>
+                                <td><b><a href = 'SweetDreams/B2_DriedgerSTFT.mp3'>B3 Driedger</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B0_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B1_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/B2_DriedgerSTFT.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+
+                                <tr>
+                                <td><b><a href = 'SweetDreams/Bp0_Translated.mp3'>B'1</a></b></td>
+                                <td><b><a href = 'SweetDreams/Bp1_Translated.mp3'>B'2</a></b>
+                                </td>
+                                <td><b><a href = 'SweetDreams/Bp2_Translated.mp3'>B'3</a></b></td>
+                                </tr>
+
+                                <tr>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Bp0_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Bp1_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                <td>
+                                <audio controls style="width: 500px;">
+                                  <source src='SweetDreams/Bp2_Translated.mp3' type="audio/mpeg">
+                                Your browser does not support the audio element.
+                                </video>
+                                </td>
+                                </tr>
+
+                                </table><BR><BR>
+
+
+							
+							
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+                               
+							</section>
+							<ul class="copyright">
+								<li>&copy; <a href = "http://www.ctralie.com">Christopher J. Tralie</a>. All rights reserved</li>
+								<li>Design: <a href="http://html5up.net">HTML5 UP</a>.</li> 
+								<li>This work was partially supported by an NSF Graduate Fellowship NSF under grant DGF-1106401 and an NSF big data grant DKA-1447491</li>
+							</ul>
+						</div>
+					</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			
+            <!-- Start of StatCounter Code for Default Guide -->
+            <script type="text/javascript">
+            var sc_project=11397511; 
+            var sc_invisible=1; 
+            var sc_security="b7c2caad"; 
+            var scJsHost = (("https:" == document.location.protocol) ?
+            "https://secure." : "http://www.");
+            document.write("<sc"+"ript type='text/javascript' src='" +
+            scJsHost+
+            "statcounter.com/counter/counter.js'></"+"script>");
+            </script>
+            <noscript><div class="statcounter"><a title="web analytics"
+            href="http://statcounter.com/" target="_blank"><img
+            class="statcounter"
+            src="//c.statcounter.com/11397511/0/b7c2caad/1/" alt="web
+            analytics"></a></div></noscript>
+            <!-- End of StatCounter Code for Default Guide -->
+
+	</body>
+</html>

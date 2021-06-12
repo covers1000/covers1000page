@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="d3.min.js"></script>
+</head>
+<body>
+
+	<div class="tabmenu">
+            
+	</div>
+
+<script>
+
+
+    changeTab = function(tab, d) {
+        console.log(tab);
+        console.log(d);
+    }
+    var tabbuttons = d3.select('.tabmenu').selectAll("button")
+					   .data(["Self-Similarity", "Force Graph"])
+                       .enter().append("button").on('click', changeTab)
+                       .text(function (d) {return d});
+
+</script>
+
+  
+</body>
+</html>
